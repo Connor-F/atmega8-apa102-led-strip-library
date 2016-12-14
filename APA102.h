@@ -14,14 +14,13 @@ typedef struct
 } colour_t;
 
 // number of LEDs in the LED strip being controlled
-static uint16_t numberOfLEDs;
+uint16_t numberOfLEDs;
 
 void initAPA102(uint16_t);
 
 uint8_t apa102LightLEDs(colour_t *, uint16_t);
 colour_t hsvToRgb(uint16_t, uint8_t, uint8_t);
 
-static void sendEndFrame(void);
-static void sendStart(void);
+uint16_t getNumberOfLEDs(void);
 
 #endif

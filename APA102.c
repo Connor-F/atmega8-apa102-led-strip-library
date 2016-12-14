@@ -11,6 +11,11 @@ void initAPA102(uint16_t leds)
 	initSPI();
 }
 
+uint16_t getNumberOfLEDs(void)
+{
+	return numberOfLEDs;
+}
+
 /*
    sends the initialisation signal to the led strip
 */
