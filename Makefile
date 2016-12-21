@@ -5,8 +5,8 @@
 ##########------------------------------------------------------##########
 
 MCU   = atmega328
-F_CPU = 1000000UL  
-BAUD  = 115200UL
+F_CPU = 8000000UL  
+BAUD  = 9600UL
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
 ## A directory for common include files and the simple USART library.
@@ -125,9 +125,16 @@ squeaky_clean:
 ##########              Programmer-specific details             ##########
 ##########           Flashing code to AVR using avrdude         ##########
 ##########------------------------------------------------------##########
+## Mega 48, 88, 168, 328 default values
+#LFUSE = 0x62
+#HFUSE = 0xdf
+#EFUSE = 0x00
+
+## 8mhz cpu
+FUSE_STRING = -U lfuse:w:0xe2:m -U hfuse:w:0xdf:m 
 
 flash: $(TARGET).hex 
-	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
+	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) $(FUSE_STRING) -U flash:w:$<
 
 ## An alias
 program: flash
@@ -163,9 +170,9 @@ flash_109: flash
 ##########------------------------------------------------------##########
 
 ## Mega 48, 88, 168, 328 default values
-LFUSE = 0x62
-HFUSE = 0xdf
-EFUSE = 0x00
+#LFUSE = 0x62
+#HFUSE = 0xdf
+#EFUSE = 0x00
 
 ## Generic 
 FUSE_STRING = -U lfuse:w:$(LFUSE):m -U hfuse:w:$(HFUSE):m -U efuse:w:$(EFUSE):m 

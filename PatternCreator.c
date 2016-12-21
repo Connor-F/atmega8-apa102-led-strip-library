@@ -3,7 +3,7 @@
 
 static uint8_t loopCount = 0;
 
-void initPatterGenerator(uint16_t seed, uint16_t ledCount)
+void initPatterCreator(uint16_t seed, uint16_t ledCount)
 {
 	initAPA102(ledCount);
 	srand(seed);
@@ -13,12 +13,11 @@ void initPatterGenerator(uint16_t seed, uint16_t ledCount)
    fills the provided colour_t array with a continous sequence of
    changing colours
 Param: *dest -> a colour_t array to fill with colours of the rainbow
-len -> the size of the colour array
  */
-void createRainbow(colour_t *dest, uint16_t len)
+void createRainbow(colour_t *dest)
 {
 	uint8_t ran = rand() >> 4; // only interresting in top 4 bits
-	for(uint16_t i = 0; i < len; i++)
+	for(uint16_t i = 0; i < getNumberOfLEDs(); i++)
 	{
 		uint8_t p = ran - i * 8;
 		dest[i] = hsvToRgb((uint32_t)p * 359 / 256, 255, 255);
@@ -34,7 +33,7 @@ void createRainbow(colour_t *dest, uint16_t len)
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 
-void brightTwinkleColourAdjust(uint8_t *colour)
+static void brightTwinkleColourAdjust(uint8_t *colour)
 {
 	if (*colour == 255)
 	{
@@ -59,7 +58,7 @@ void brightTwinkleColourAdjust(uint8_t *colour)
 	}
 }
 
-void colourExplosionColourAdjust(uint8_t *colour, uint8_t propChance,
+static void colourExplosionColourAdjust(uint8_t *colour, uint8_t propChance,
 		uint8_t *leftColour, uint8_t *rightColour)
 {
 	if (*colour == 31 && (rand() % 10 + 1)!= 0)
@@ -76,7 +75,7 @@ void colourExplosionColourAdjust(uint8_t *colour, uint8_t propChance,
 	brightTwinkleColourAdjust(colour);
 }
 
-void colourExplosion(colour_t *cols, uint8_t noNewBursts)
+void createExplosion(colour_t *cols, uint8_t noNewBursts)
 {
 	// adjust the cols of the first LED
 	colourExplosionColourAdjust(&cols[0].red, 9, (uint8_t*)0, &cols[1].red);
@@ -150,9 +149,11 @@ void colourExplosion(colour_t *cols, uint8_t noNewBursts)
 			cols[j].brightness = 15;
 		}
 	}
+
+	loopCount++;
 }
 
-void fade(uint8_t *val, uint8_t fadeTime)
+static void fade(uint8_t *val, uint8_t fadeTime)
 {
 	if (*val != 0)
 	{
@@ -163,7 +164,7 @@ void fade(uint8_t *val, uint8_t fadeTime)
 	}
 }
 
-void christmasColours(colour_t *cols)
+void createChristmas(colour_t *cols)
 {
 	// loop counts to leave strip initially dark
 	const uint8_t initialDarkCycles = 10;

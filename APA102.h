@@ -18,7 +18,7 @@ uint16_t numberOfLEDs;
 
 void initAPA102(uint16_t);
 
-uint8_t apa102LightLEDs(colour_t *, uint16_t);
+void apa102LightLEDs(colour_t *);
 colour_t hsvToRgb(uint16_t, uint8_t, uint8_t);
 
 uint16_t getNumberOfLEDs(void);

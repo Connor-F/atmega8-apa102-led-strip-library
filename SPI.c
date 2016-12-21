@@ -12,7 +12,7 @@ void initSPI(void)
 	SPI_MISO_PORT |= (1 << SPI_MISO);                  /* pullup on MISO */
 	SPI_SCK_DDR |= (1 << SPI_SCK);                      /* output on SCK */
 
-	//SPCR |= (1 << SPR1);                /* div 16, safer for breadboards */
+	SPCR |= (1 << SPR1);                /* div 16, safer for breadboards */
 	SPCR |= (1 << MSTR);                                  /* clockmaster */
 	SPCR |= (1 << SPE);                                        /* enable */
 }

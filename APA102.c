@@ -39,22 +39,16 @@ static void sendEndFrame(void)
 }
 
 /*
-   lights len number of LEDs in the strip using the colours provided
+   lights the number of LEDs in the strip using the colours provided
 	Param: *col -> an array of colour_t where each element represents 1 LED in the strip
-		   len -> the length of the colour array (also reperesents the number of LEDs that will be illuminated)
-	Returns: 0 on success
-			 1 if the length provided was > the number of LEDs in the strip
 */
-uint8_t apa102LightLEDs(colour_t *col, uint16_t len)
+void apa102LightLEDs(colour_t *col)
 {
-	if(len > numberOfLEDs)
-		return 1;
-
 	// start frame indicator
 	sendStartFrame();
 
 	// led frames
-	for(uint16_t i = 0; i < len; i++)
+	for(uint16_t i = 0; i < numberOfLEDs; i++)
 	{
 		if(col[i].brightness > 31) // default to 15 (50%) brightness if brightness value was invalid
 			spiExchangeByte(0xe0 + 15);
